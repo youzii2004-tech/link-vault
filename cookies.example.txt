@@ -1,0 +1,22 @@
+# Netscape HTTP Cookie File
+# https://curl.se/docs/http-cookies.html
+# Link Vault — Authentication Engine Configuration Template
+#
+# ==============================================================================
+# CRITICAL SECURITY WARNING:
+# 1. NEVER commit or upload an active cookies.txt file containing real session secrets.
+# 2. Real cookies grant authenticated access to accounts (Instagram, Facebook, etc.).
+# 3. Always ensure your active 'cookies.txt' is strictly ignored by version control.
+# 4. Link Vault isolates cookie files locally and never transmits them to external APIs.
+# ==============================================================================
+#
+# Format Schema (Tab-delimited):
+# <domain>  <include_subdomains>  <path>  <secure_only>  <expiry_timestamp>  <name>  <value>
+#
+# Template Mock Examples:
+.instagram.com	TRUE	/	TRUE	1798765432	sessionid	EXAMPLE_SESSION_TOKEN_NEVER_COMMIT
+.facebook.com	TRUE	/	TRUE	1798765432	c_user	100000000000000
+.facebook.com	TRUE	/	TRUE	1798765432	xs	EXAMPLE_FB_XS_TOKEN_NEVER_COMMIT
+.tiktok.com	TRUE	/	TRUE	1798765432	sessionid	EXAMPLE_TIKTOK_SESSION_TOKEN
+.youtube.com	TRUE	/	TRUE	1798765432	LOGIN_INFO	EXAMPLE_YOUTUBE_LOGIN_TOKEN
+.x.com	TRUE	/	TRUE	1798765432	auth_token	EXAMPLE_X_AUTH_TOKEN

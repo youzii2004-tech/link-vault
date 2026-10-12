@@ -1,0 +1,72 @@
+# ==============================================================================
+# Link Vault — Enterprise Configuration Specification
+# Omni-Channel Media Ingestion & Multimodal Video Intelligence Pipeline
+# ==============================================================================
+
+version: "1.0"
+
+engine:
+  download_dir: "downloads"
+  analysis_dir: "analysis_output"
+  cookies_path: null  # Provide local path to cookies.txt (e.g., "cookies.txt") when scraping authenticated endpoints
+  max_workers: 4
+  timeout_seconds: 60
+  rate_limit_delay_seconds: 1.5
+  max_retries: 3
+  retry_backoff_factor: 2.0
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+
+platforms:
+  instagram:
+    enabled: true
+    require_cookies: true
+    allowed_types: ["reel", "post", "carousel", "tv"]
+  tiktok:
+    enabled: true
+    require_cookies: false
+    allowed_types: ["video", "photo"]
+  youtube:
+    enabled: true
+    require_cookies: false
+    preferred_format: "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"
+    allowed_types: ["short", "video"]
+  facebook:
+    enabled: true
+    require_cookies: true
+    allowed_types: ["reel", "watch", "video"]
+  x:
+    enabled: true
+    require_cookies: false
+    allowed_types: ["video", "gif", "post"]
+  pinterest:
+    enabled: true
+    require_cookies: false
+    allowed_types: ["pin", "video"]
+  reddit:
+    enabled: true
+    require_cookies: false
+    allowed_types: ["video", "post"]
+  generic:
+    enabled: true
+    require_cookies: false
+    allowed_types: ["media", "stream"]
+
+analysis:
+  enabled: true
+  output_dir: "analysis_output"
+  keyframes:
+    enabled: true
+    count: 5
+    format: "jpg"
+    quality: 2
+  audio:
+    detect_streams: true
+    extract_wav: true
+  transcription:
+    enabled: true
+    engine: "faster-whisper"
+    model_size: "tiny"
+    device: "cpu"
+    compute_type: "int8"
+    language: null  # Auto-detect language
+    fallback_silent: true

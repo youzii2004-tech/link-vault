@@ -1,0 +1,87 @@
+# ==========================================
+# Link Vault — Enterprise Security & Artifact Ignore Rules
+# ==========================================
+
+# Strict Authentication & Cookie Isolation (Zero Leakage)
+cookies.txt
+cookies.*.txt
+!cookies.example.txt
+*.session
+*.cookies
+*.token
+*.key
+*.pem
+.env*
+!*.env.example
+
+# Runtime Ingestion & Download Outputs
+downloads/
+download/
+analysis_output/
+keyframes/
+transcripts/
+*.mp4
+*.webm
+*.mkv
+*.m4a
+*.mp3
+*.wav
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.part
+*.ytdl
+
+# Private Data & Chat Archives (Strict Isolation)
+*WhatsApp*
+*telegram*
+*discord*
+*.zip
+*.tar.gz
+*.7z
+*.private.csv
+*.local.csv
+batch_raw/
+temp/
+tmp/
+
+# Python & Build Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Linting
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# IDE & OS Artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
