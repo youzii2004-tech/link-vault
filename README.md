@@ -22,18 +22,19 @@ URL parsing/cleanup, download orchestration (threads, retries) and the analysis/
 3. **Download** – yt-dlp in a thread pool, with retries and exponential backoff. Raw `.mp4`/`.webm`
    URLs fall back to a plain HTTP download. Optional Netscape `cookies.txt` for logged-in content.
 4. **Analyze** – `ffprobe` metadata (duration, codec, resolution, aspect ratio, audio track),
-   5 JPEG keyframes at 10/30/50/70/90 % of the duration via `ffmpeg`, and a timestamped transcript via
+   5 evenly spaced JPEG keyframes (at 1/6, 2/6, … 5/6 of the duration) via `ffmpeg`, and a timestamped transcript via
    faster-whisper. Videos without an audio track skip transcription.
-5. **Browse** – `serve` starts a local dashboard (`dashboard/index.html`) over the output folder.
+5. **Browse** – `serve` starts a local dashboard that shows your ingested links with their metadata, keyframes and transcripts.
 
 ## Dashboard
 
 ![Dashboard overview](dashboard/dashboard_preview.png)
 ![Inspector drawer](dashboard/dashboard_drawer_preview.png)
 
-*Screenshots show the bundled demo data. The dashboard page is currently a standalone UI prototype
-(paste/CSV ingestion and cookie-format checking run in the browser); it does not yet load the JSON
-produced by `analyze`.*
+*Screenshots show the built-in demo data, which appears when there is nothing to load. With
+`serve --links links.json --analysis-dir analysis_output/` the table, keyframes and transcripts come from
+your own `ingest`/`analyze` output. The paste/CSV boxes and cookie-format checker run in the browser only
+and don't change the saved ledger.*
 
 ## Requirements
 
@@ -47,7 +48,7 @@ produced by `analyze`.*
 python -m src.cli ingest sample_links.csv --out links.json
 python -m src.cli download links.json --cookies cookies.txt --workers 4 --out-dir downloads/
 python -m src.cli analyze downloads/ --out-dir analysis_output/
-python -m src.cli serve --port 8080 --host 127.0.0.1
+python -m src.cli serve --links links.json --analysis-dir analysis_output/ --port 8080
 ```
 
 (On Windows you can use `py -m src.cli ...`.) Settings live in `config/link_vault.example.yaml`.

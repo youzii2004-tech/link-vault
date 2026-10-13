@@ -10,12 +10,14 @@ import json
 import logging
 from pathlib import Path
 import socketserver
+import urllib.parse
 import sys
 from typing import List
 
 from .analyzer import VideoAnalyzer
 from .config import LinkVaultConfig
 from .downloader import MediaDownloader
+from .ledger import build_ledger
 from .parser import LinkParser, ParsedLink
 
 
@@ -182,9 +184,39 @@ def handle_serve(args: argparse.Namespace) -> int:
         print(f"Error: Dashboard directory not found at {dashboard_dir}", file=sys.stderr)
         return 1
 
+    links_file = Path(args.links) if args.links else None
+    analysis_dir = Path(args.analysis_dir).resolve()
+    keyframes_dir = analysis_dir / "keyframes"
+
     class DashboardHTTPHandler(http.server.SimpleHTTPRequestHandler):
         def __init__(self, *handler_args, **kwargs):
             super().__init__(*handler_args, directory=str(dashboard_dir), **kwargs)
+
+        def do_GET(self):
+            path = urllib.parse.urlparse(self.path).path
+            if path == "/api/ledger":
+                body = json.dumps(build_ledger(links_file, analysis_dir)).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
+            if path.startswith("/keyframes/"):
+                # Serve only plain file names from the keyframes folder (no traversal).
+                name = Path(urllib.parse.unquote(path[len("/keyframes/"):])).name
+                target = keyframes_dir / name
+                if name and target.is_file():
+                    data = target.read_bytes()
+                    self.send_response(200)
+                    self.send_header("Content-Type", "image/jpeg")
+                    self.send_header("Content-Length", str(len(data)))
+                    self.end_headers()
+                    self.wfile.write(data)
+                else:
+                    self.send_error(404)
+                return
+            super().do_GET()
 
     print(f"\n==================================================")
     print(f" Link Vault — Local Dashboard Server")
@@ -229,6 +261,8 @@ def main() -> None:
     # Serve subcommand
     serve_parser = subparsers.add_parser("serve", help="Launch local dashboard web server")
     serve_parser.add_argument("--port", "-p", type=int, default=8080, help="Server port (default: 8080)")
+    serve_parser.add_argument("--links", help="Ingested links JSON to show (from `ingest --out`)")
+    serve_parser.add_argument("--analysis-dir", default="analysis_output", help="Folder written by `analyze` (default: analysis_output)")
     serve_parser.add_argument("--host", default="127.0.0.1", help="Server host (default: 127.0.0.1)")
 
     args = parser.parse_args()
