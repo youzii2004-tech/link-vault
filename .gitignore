@@ -29,6 +29,7 @@ transcripts/
 *.jpg
 *.jpeg
 *.png
+!dashboard/*.png
 *.webp
 *.part
 *.ytdl

@@ -26,6 +26,15 @@ URL parsing/cleanup, download orchestration (threads, retries) and the analysis/
    faster-whisper. Videos without an audio track skip transcription.
 5. **Browse** – `serve` starts a local dashboard (`dashboard/index.html`) over the output folder.
 
+## Dashboard
+
+![Dashboard overview](dashboard/dashboard_preview.png)
+![Inspector drawer](dashboard/dashboard_drawer_preview.png)
+
+*Screenshots show the bundled demo data. The dashboard page is currently a standalone UI prototype
+(paste/CSV ingestion and cookie-format checking run in the browser); it does not yet load the JSON
+produced by `analyze`.*
+
 ## Requirements
 
 - Python 3.10+
