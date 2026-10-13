@@ -1,6 +1,6 @@
 """Link Vault Omni-Channel Media Downloader.
 
-Orchestrates yt-dlp and gallery-dl execution with session cookie authentication routing,
+Orchestrates yt-dlp execution with optional session-cookie authentication,
 exponential backoff retry policies, thread-pool concurrency, and strict local disk isolation.
 """
 
